@@ -16,6 +16,7 @@ jobs:
        dockerfile: [./test/Dockerfile, ./prod/Dockerfile]
 
     steps:
-    - uses: actions/checkout@v4
+    - name: Checkout Repository
+      uses: actions/checkout@v4
     - name: Build the Docker image
       run: docker build . --file ${{ matrix.dockerfile }} --tag my-image-name:$(date +%s)
