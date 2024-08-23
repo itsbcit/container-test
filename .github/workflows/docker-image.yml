@@ -9,10 +9,13 @@ on:
 jobs:
 
   build:
-
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+       dockerfile: [./test/Dockerfile, ./prod/Dockerfile]
 
     steps:
     - uses: actions/checkout@v4
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag my-image-name:$(date +%s)
+      run: docker build . --file ${{ matrix.dockerfile }} --tag my-image-name:$(date +%s)
