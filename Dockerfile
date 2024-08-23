@@ -1,7 +1,7 @@
-FROM bcit.io/library/almalinux:9
+FROM almalinux:9
 
 LABEL maintainer="jesse@weisner.ca, github.com/deuterium"
-LABEL build_id="1724451997"
+LABEL build_id="1724452983"
 
 # Add docker-entrypoint script base
 ADD https://github.com/itsbcit/docker-entrypoint/releases/download/v1.6/docker-entrypoint.tar.gz /docker-entrypoint.tar.gz
@@ -26,6 +26,11 @@ RUN [ -d /usr/local/bin ] || mkdir -p /usr/local/bin \
  && rm -f /dockerize.tar.gz
 
 ENV DOCKERIZE_ENV production
+
+# Add Tini
+ADD https://github.com/krallin/tini/releases/download/v0.19.0/tini-static-amd64 /tini
+RUN chmod +x /tini \
+ && ln -s /tini /sbin/tini 
 
 ENTRYPOINT ["/tini", "--", "/docker-entrypoint.sh"]
 CMD [ "init-loop" ]
