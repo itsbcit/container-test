@@ -1,0 +1,22 @@
+name: container-qgis
+
+on:
+  push:
+    branches: [ "main" ]
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: true
+      matrix:
+        include:
+          - environment: 'container-qgis'
+            dockerfile: 'prod/Dockerfile'
+
+    steps:
+    - name: Build and push Docker images
+      uses: docker/build-push-action@v6.7.0
+      with:
+        file: ${{ matrix.dockerfile }}
+        tags: ${{ matrix.environment }}
