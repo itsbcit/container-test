@@ -11,10 +11,8 @@ jobs:
       fail-fast: true
       matrix:
         include:
-          - environment: 'test'
+          - environment: 'container-test'
             dockerfile: 'test/Dockerfile'
-          - environment: 'prod'
-            dockerfile: 'prod/Dockerfile'
 
     steps:
     - name: Build and push Docker images
