@@ -1,21 +1,29 @@
-name: Docker Image CI
+name: Test Build Workflow
 
 on:
   push:
     branches: [ "main" ]
 
 jobs:
-
-  docker:
+  build-and-push:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: true
       matrix:
-       dockerfile: [test/Dockerfile, prod/Dockerfile]
+        include:
+          - environment: 'test'
+            dockerfile: 'test/Dockerfile'
+            env-tag: 
+              - 'test'
+          - environment: 'prod'
+            dockerfile: 'prod/Dockerfile'
+            env-tag: 
+              - 'prod'
 
     steps:
     - name: Build and push Docker images
       uses: docker/build-push-action@v6.7.0
       with:
         file: ${{ matrix.dockerfile }}
-        push: true
+        tags: ${{ matrix.env-tag }}
+
