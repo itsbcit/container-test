@@ -15,10 +15,27 @@ jobs:
         include:
           - environment: '<%= container_name %>'
             dockerfile: '<%= dockerfile_path %>'
+            containertag: '<%= container_tag %>'
 
     steps:
-    - name: Build and push Docker images
-      uses: docker/build-push-action@v6.7.0
-      with:
-        file: ${{ matrix.dockerfile }}
-        tags: ${{ matrix.environment }}
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3.3.0
+        with:
+          # registry: bcit.io ## for when we use bcit.io
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_TOKEN }}
+
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action@9ec57ed1fcdbf14dcef7dfbe97b2010124a938b7
+        with:
+          images: |
+            ekraft2/container-test:<%= container_name %>
+            # ghcr.io/${{ github.repository }}
+
+      - name: Build and push Docker images
+        uses: docker/build-push-action@v6.7.0
+        with:
+          file: ${{ matrix.dockerfile }}
+          tags: ${{ matrix.containertag }}
+          push: true

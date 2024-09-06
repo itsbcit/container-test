@@ -72,10 +72,10 @@ def render_template(template, output, scope)
   end
 end
 
-def read_csv(csv)
-    # TODO build a method that reads a csv file and builds an object for each line of the csv, then builds a workflow file from that object
-  end
-end
+# def read_csv(csv)
+#     # TODO build a method that reads a csv file and builds an object for each line of the csv, then builds a workflow file from that object
+#   end
+# end
 
 desc "Update Jenkinsfile template for ESS Job"
 task :default do
@@ -92,6 +92,11 @@ task :default do
     'prod/Dockerfile'
   ]
 
+  container_tags = [
+    'ekraft2/container-test:test',
+    'ekraft2/container-test:prod'
+  ]
+
   #TODO Setup job so it reads and assigns values from lines entered just above here in csv format
 
   # Create counter for each container url to be applied properly
@@ -100,6 +105,7 @@ task :default do
   container_names.each do |container|
     container_name = container
     dockerfile_path = dockerfile_paths[counter]
+    container_tag = container_tags[counter]
     # Name repo file and render template
     workflow_file_name = container.gsub(' ','-').downcase
     render_template("GitHubActions.erb", ".github/workflows/workflow-#{workflow_file_name}.yml", binding)

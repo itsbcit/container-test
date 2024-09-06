@@ -1,7 +1,8 @@
 FROM almalinux:9
 
 LABEL maintainer="jesse@weisner.ca, github.com/deuterium"
-LABEL build_id="1724711403"
+LABEL build_id="1725663986"
+LABEL test="testtest"
 
 # Add docker-entrypoint script base
 ADD https://github.com/itsbcit/docker-entrypoint/releases/download/v1.6/docker-entrypoint.tar.gz /docker-entrypoint.tar.gz
